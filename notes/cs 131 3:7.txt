@@ -1,0 +1,77 @@
+cs disc 3/7
+
+%comments
+%gprolog command runs interpreter
+%consult(filenamenoextenxion).
+%variables start with capital letter
+
+%writing facts
+parent(a,b).
+parent(a,c).
+parend(b,d).
+parent(c,e).
+parent(e,f).
+
+%rules
+grandparent(X,Y):-parent(Z,Y),parent(X,Z).
+
+grandparent(a,f). //no
+grandparent(c,f). //yes
+grandparent(a,C). //C=d,e
+
+%coloring problem
+non_symm_adjacent(1,2).
+non_symm_adjacent(1,3).
+non_symm_adjacent(1,4).
+non_symm_adjacent(1,5).
+non_symm_adjacent(2,3).
+non_symm_adjacent(2,4).
+non_symm_adjacent(3,4).
+non_symm_adjacent(4,5).
+
+adjacent(X,Y):-non_symm_adjacent(X,Y).
+adjacent(X,Y):-non_symm_adjacent(Y,X).
+
+color(1,red,a).
+color(2,blue,a).
+color(3,green,a).
+color(4,yellow,a).
+color(5,blue,a).
+
+color(1,red,b).
+color(2,blue,b).
+color(3,green,b).
+color(4,blue,b).
+color(5,green,b).
+
+conflict(R1,R2,Scheme):-adjacent(R1,R2),color(R1,C1,Scheme),color(R2,C2,Scheme),C1=C2.
+
+conflict(Scheme):-(_,_,Scheme).
+
+%lists
+
+%find the max number in a list of numbers
+max([X],Max).
+max([H|T],H):-max(T,TailMax),H>=TailMax.
+max([H|T],R):-max(T,TailMax),H<TailMax.
+
+%peano_to_int(P,I)
+peano_to_int(zero,0).
+peano_to_int(succ(P),I):-peano_to_int(P,I1),I is I1+1.
+
+%add(P1,P2,Sum)
+add(zero,P2,P2).
+add(succ(P1),P2,Sum):-add(P1,succ(P2),Sum).
+
+%true if E belongs to list L
+%mem(E,L)
+mem(E,[E|T]).
+mem(E,[_|T]):-mem(E,T).
+
+%drop_first(1,[1,2,3],[2,3])
+%drop_first(E,L,R)
+drop_first(E,[E|T],T).
+drop_first(E,[H|T],[H|R]):-drop_first(E,T,R).
+
+%write permute(L1,L2) using drop_first
+%

@@ -1,0 +1,67 @@
+cs 131 disc notes 1/17
+
+peano numbers
+0-Zero
+1-Succ(Zero)
+2-Succ(Succ(Zero))
+
+type peano =
+	Zero
+	| Succ of peano
+
+let rec peanoToInt p
+	match p with
+		Zero -> 0
+		| Succ(p2) -> 1+(peanoToInt p2) 
+
+let rec intToPeano n =
+	match n with
+		0 -> Zero
+		| _ when i<0 -> raise Invalid_args
+		| _ -> Succ(intToPeano (n-1))
+
+let rec addPeano p1 p2 =
+	match p2 with
+		Zero -> p1
+		| Succ(p2') -> addPeano(Succ(p1)) p2'
+
+let rec multiplyPeano p1 p2 =
+	match p1 with
+		Zero -> Zero
+		| Succ(p1') -> addPeano p2 (multiplyPeano p1' p2)
+
+let and_list l =
+	match l with
+		[] -> raise Invalid_args
+		| _ -> list.fold_left(fun x y -> x&&y) true l
+
+let and_list2 l =
+	match l with
+		[] -> raise Invalid_args
+		| _ -> not (list.exists(fun v -> v=false) l)
+
+let not_list l =
+	list.map (fun v -> (not v)) l
+
+let not_list1 l =
+	list.map not l
+
+let not_list3 = list.map not  //curried style!
+
+type 'a set =
+	Empty
+	| NonEmpty of 'a list
+
+let add element s =
+	match s with
+		Empty -> NonEmpty[element]
+		| NonEmpty l -> if list.exists (fun v -> element=v) l then s
+				else NonEmpty(l@[element])
+
+let fold f s init =
+	matche s with
+		Empty -> init
+		| NonEmpty l -> list.fold_left f l init
+
+let union s1 s2 =
+	fold add s1 s2

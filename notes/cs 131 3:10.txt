@@ -1,0 +1,63 @@
+unification operator is =
+
+t1=t2
+either says no
+or says yes and provides unifier/substitution (s) mapping variables to
+values such that s(t1) is structurally identical to s(t2)
+
+eg f(X,a)=f(b,Y)  returns yes
+   {X->b, Y->a}
+
+key property: unification always produces the unique most general unifier (MGU)
+for any two terms
+
+s is a mgu for t and t2 if
+  1. s is a unifier for t1 and t2
+  2. for any other unifier s' for t1 and t2
+     there exists a substitution s0 such that 
+	s0(s(t1))=s'(t1) and
+	s0(s(t2))=s'(t2)
+
+
+Resolution
+
+resolution(rule, list of goals):
+  s=mgu(head(rule), head(goals))
+  return s(append(tail(rule), tail(goals)))
+
+example
+1. p(f(Y)):-q(Y),r(Y)
+2. q(h(Z)):-t(Z)
+3. r(h(a))
+4. t(a)
+
+goals: [p(X)]
+
+resolution(1,[p(x)])
+  mgu(p(f(Y)), p(X))={X->f(Y)}
+  return [q(Y),r(Y)]
+
+reolution(2,[q(Y),r(Y)])
+  mgu (q(h(Z)), q(Y))={Y->h(Z)}
+  return [t(Z), r(h(Z))]
+
+resolution(4,[t(Z), r(h(Z))])
+  mgu(t(a),t(Z))={Z->a}
+  return [r(h(a))]
+
+resolution(3,[r(h(a))])
+  mgu(r(h(a)), r(h(a)))={}
+  return []
+
+answer: X=f(h(a))
+
+
+
+example tree
+
+			rev(x,[1])
+1)		no			X=[H|T] R=[1]
+					[rev(T,X'),append(X',[H],[1])]
+2)				T=[] X'=[]			infinte loop
+				append([],[h],[1])	
+3)			  	solution=[1]		

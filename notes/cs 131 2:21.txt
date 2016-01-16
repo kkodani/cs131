@@ -1,0 +1,185 @@
+cs131 2\21 disc
+
+public static void main(String[] args)
+
+subtyping
+substitutable types
+if A is a subtype of B, then everywhere you use B, you can use A
+
+Subtypes should strictly add functionality
+
+should not remove existing functionality and should not change assumptions
+
+3 ways to get subtyping in java
+1. interface A extends (another interface) B {…}
+2. class A implements B {…}
+3. class A extends (another class) B {…}  (copy type and implmentation)
+
+class B{
+	protected int get() {…}
+}
+
+class A extends B{
+	private int get() {…}
+}
+
+class C extends B{
+	public int get() {…}
+}
+
+this fails because get() is changed from protected to other, will not compile
+
+interface Rectangle{
+	float area();
+	float perimeter();
+}
+
+class Square implements Rectangle{
+	float side;
+
+	public float area(){
+		return side*side;
+	}
+
+	public float perimeter(){
+		return side*4;
+	}
+}
+
+square is subtype of rectangle
+
+interface Rectangle{
+	void set Size(floaat width, float Height);
+	float getHeight();
+	float getWidth();
+}
+
+class Square implements Rectangle{
+	float side();
+}
+
+square is not subtype of rectangle
+
+
+int is a subtype of number
+does List<int> become a subtype of List<number>?  not in all cases
+e.g. void append(List<Number> numbers, Number num){
+	numbers.insert(num)
+}
+
+append(List<int>, float)  //will error
+
+interface subscription{
+	public int SubscriptionPeriod()
+}
+
+class RegularSubscription extends Subscription{
+	public int SubscriptionPeriod() {return 10}
+}
+
+class PremiumSubscription extends Subscription{
+	public int SubscriptionPeriod() {return 30}
+}
+good style
+
+
+class Set{
+	public boolean add(int element) {...}
+	public boolean addAll(List<int> elements) {...}
+}
+
+class InstrumentedSet extends Set{
+	protected int numberOfAdditions=0;
+	public boolean add(int element){
+		numberofAdditions++;
+		return super.add(element);
+	}
+	public boolean addAll(List<int> elements){
+		numberofAdditions+=elements.size();
+		return super.addAll(elements);
+	}
+}
+adding duplicates to a set makes numberOfadditions wrong
+if add/addAll fails numberOfadditions will be wrong
+if addAll calls add, then you are incrementing twice
+
+interface Point{
+	float getX();
+	float getY();
+}
+
+class Cartesian implements Point{
+	private float x,y;
+	public Cartesian(float x, float y){
+		this.x=x;
+		this.y=y;
+	}
+	public float getX() {return x;}
+	public float getY() {return y;}
+}
+
+interface Shape{
+	public float area();
+	public float perimeter();
+}
+
+class Rectangle implements Shape{
+	private float width, height;
+	private Point corner;
+	public Rectangle(Point corner, float width, float height){
+		this.corner=corner;
+		this.width=width;
+		this.height=height;
+	}
+	public float area(){
+		return width*height;
+	}
+	public float perimeter(){
+		return width+width+height+height;
+	}
+}
+
+class Circle implements Shape{
+	private float radius;
+	private Point center;
+	public Circle(Point center, float radius){
+		this.center=center;
+		this.radius=radius;
+	}
+	public float area(){
+		return (float)3.14*radius*radius;
+	}
+	public float perimeter(){
+		return (float)2*3.14*radius;
+	}
+}
+
+
+
+peano numbers
+0=Zero
+1=Succ(Zero)
+2=Succ(Succ(Zero))
+
+interface Peano{
+	public int peanoToInteger();
+	public peano add(Peano p);
+}
+
+class Zero implements Peano{
+	public int peanoToInteger(){return 0;}
+	public peano add(Peano p){return p;}
+}
+
+class Succ implements Peano{
+	private Peano pred;
+	public Succ(Peano pred){
+		this.pred=pred;
+	}
+	public int peanoToInteger(){
+		return 1+pred.peanoToInteger();
+	}
+	public peano add(Peano p){
+		return pred.add(new Succ(p))
+	}
+}

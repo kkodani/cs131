@@ -1,0 +1,13 @@
+cs disc 3/14
+
+T is a subtype of S
+    -> T can be used wherever S can be used
+3 ways o get subtyping
+1) interface S
+   interface T extends S
+2) interface S
+   class T implements S
+3) class S
+   class T extends S  (this is also inheritance)
+
+subtyping is transitive

@@ -1,0 +1,23 @@
+cs131 1/27
+
+ocaml inerpreter: parse->typecheck->run code
+
+(*
+e ::= b|n|x|not e|if e then e else e|let x=e in e
+b ::= true|false
+n ::= 1|2|3|…
+x ::= variable names
+*)
+
+type e =
+	B of bool
+	| N of int
+	| X of string
+	| Not of e
+	| If of e*e*e
+	| Let of string*e*e
+
+let example =
+	Let("x", Not(B true),
+		If(X "x", N 3, N 4))
+
